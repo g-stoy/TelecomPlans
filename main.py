@@ -49,19 +49,16 @@ def get_a1_data():
 
     url = 'https://www.a1.bg/a1-one-unlimited'
     driver = get_driver(url)
-    driver.set_window_size(1060, 812)
 
-    h2_element = driver.find_element(By.XPATH, "//h2[contains(text(), 'Планове')]")
-    next_element = h2_element.find_element(By.XPATH, "following-sibling::div[1]")
-    plan_containers = next_element.find_elements(By.XPATH, "*")
-    plan_counts = len(plan_containers)
+    container = driver.find_element(By.XPATH, '//*[@id="37532f39-4464-4ceb-b3b1-a6b77775d93e"]/div[2]/div[2]/div[1]')
 
-    for i in range(1, plan_counts+1):
+    plans= container.find_elements(By.XPATH, "*")
+    for i in range(1, len(plans)+1):
         elements = driver.find_elements(By.CSS_SELECTOR, f"div:nth-child({i}) > .rounded-a1 .m-1\\.5")
         for element in elements:
             driver.execute_script("arguments[0].click();", element)
 
-    for index, element in enumerate(next_element.find_elements(By.XPATH, "*")):
+    for index, element in enumerate(plans):
         plan_data = element.text.splitlines()
         price = float
         if index == 0:
